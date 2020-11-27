@@ -1,0 +1,3 @@
+{% for city in cities %}
+   <a href="{% url 'details' city.slug %}">{{city}}:</a> <a href="{% url 'update_city' city.slug %}">Update</a> <a href="{% url 'delete_city' city.slug %}">Delete</a><br>
+{% endfor %}

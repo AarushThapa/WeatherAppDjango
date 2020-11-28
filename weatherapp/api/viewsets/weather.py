@@ -36,7 +36,6 @@ class ViewWeatherAPI(APIView):
             res = conn.getresponse()
             data = res.read()
             data = data.decode("utf-8")
-          
             return Response({
                 "ack": True,
                 'data': data

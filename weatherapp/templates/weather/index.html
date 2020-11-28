@@ -1,6 +1,9 @@
 {% if user.is_authenticated %}
     <a href="{% url 'add_city' %}">Add City</a>
+    <a href="{% url 'allcity' %}">Cities</a>
+
 {% endif %}
+
 <form method="POST">
     {%csrf_token%}
     {{form.as_p}}

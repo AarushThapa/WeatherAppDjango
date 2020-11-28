@@ -1,5 +1,5 @@
 import http.client
-
+import json
 from rest_framework import status
 from rest_framework import serializers
 from rest_framework.response import Response
@@ -31,14 +31,14 @@ class ViewWeatherAPI(APIView):
                 'x-rapidapi-key': "7d2f8a310fmsh6237cd22123bc70p1ee6d9jsn4545eb758793",
                 'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com"
                 }
-            conn.request("GET", f"/find?q={city}&cnt=1&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=imperial%2C%20metric", headers=headers)
+            conn.request("GET", f"/find?q={city}&cnt=1&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=metric", headers=headers)
 
             res = conn.getresponse()
             data = res.read()
             data = data.decode("utf-8")
             return Response({
                 "ack": True,
-                'data': data
+                'data': json.loads(data)
             },status=status.HTTP_200_OK)
         else: 
              return Response({

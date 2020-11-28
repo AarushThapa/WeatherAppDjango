@@ -1,4 +1,5 @@
 import http.client
+import json
 
 from django.shortcuts import get_object_or_404
 from django.http.response import HttpResponse
@@ -27,14 +28,26 @@ def index(request):
             'x-rapidapi-key': "7d2f8a310fmsh6237cd22123bc70p1ee6d9jsn4545eb758793",
             'x-rapidapi-host': "community-open-weather-map.p.rapidapi.com"
             }
-        conn.request("GET", f"/find?q={city}&cnt=1&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=imperial%2C%20metric", headers=headers)
+        conn.request("GET", f"/find?q={city}&cnt=1&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=metric", headers=headers)
 
         res = conn.getresponse()
         data = res.read()
         data = data.decode("utf-8")
-        print(data)
+        data = json.loads(data)
+
+        list = data['list']
+        list = list[0]
+
+        city = list['name']
+
+        weather = list['weather'][0]['main']
+
+        temp = list['main']['temp']
         context = {
             'data' : data,
+            'city': city,
+            'weather':weather,
+            'temp': temp,
             'form' : form
         }
         return render(request, 'weather/index.html', context)

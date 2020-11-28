@@ -53,6 +53,7 @@ class AddCity(CreateView):
         else:
             return HttpResponse("Invalid")
 
+    
 
 class DeleteCity(DeleteView):
     model = City

@@ -9,7 +9,7 @@ from django.shortcuts import render
 
 from .forms import Cityform, Searchform
 from .models import City
-
+from ..permission import LoginMixin
 
 def index(request):
     if request.method == "GET":
@@ -40,7 +40,7 @@ def index(request):
         return render(request, 'weather/index.html', context)
 
 
-class AddCity(CreateView):
+class AddCity(LoginMixin, CreateView):
     model = City
     form_class = Cityform
     template_name = 'city/add_city.html'
@@ -53,9 +53,9 @@ class AddCity(CreateView):
         else:
             return HttpResponse("Invalid")
 
-    
 
-class DeleteCity(DeleteView):
+
+class DeleteCity(LoginMixin, DeleteView):
     model = City
     template_name = 'city/delete_city.html'
     context_object_name = 'city'
@@ -66,7 +66,7 @@ class DeleteCity(DeleteView):
         return city
     
 
-class UpdateCity(UpdateView):
+class UpdateCity(LoginMixin, UpdateView):
     model = City
     form_class = Cityform
     template_name = 'city/update_city.html'
@@ -81,7 +81,7 @@ class UpdateCity(UpdateView):
         return super().form_valid(form)
 
 
-class CityDetails(DetailView):
+class CityDetails(LoginMixin, DetailView):
     model = City
     template_name = 'city/city_detail.html'
     context_object_name = 'city'
@@ -89,6 +89,7 @@ class CityDetails(DetailView):
     def get_object(self, **kwargs):
         city = get_object_or_404(City, slug=self.kwargs.get('slug'))
         return city
+
 
 class ListCity(ListView):
     model = City
